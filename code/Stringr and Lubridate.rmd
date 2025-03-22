@@ -1,0 +1,209 @@
+---
+title: "Unit V"
+author: "Suganya"
+date: '2022-11-23'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Unit V - R for Data Science-Knowledge Check-Unit IV
+
+### String Basics
+
+You can create strings with either single quotes or double quotes.
+
+```{r}
+library(tidyverse)
+library(stringr)
+```
+
+
+```{r}
+string1 <- "This is a string"
+string2 <- 'To put a "quote" inside a string, use single quotes'
+
+```
+
+
+```{r}
+str_length(c("a", "R for data science", NA))
+
+```
+
+###Combining Strings
+
+To combine two or more strings, use str_c()
+```{r}
+str_c("x", "y")
+str_c("x", "y", sep = ", ")
+
+```
+
+```{r}
+x <- c("abc", NA)
+x
+str_c("|-", x, "-|")
+
+```
+```{r}
+str_c("|-", str_replace_na(x), "-|")
+```
+### Subsetting Strings
+
+You can extract parts of a string using str_sub(). As well as the
+string, str_sub() takes start and end arguments that give the
+(inclusive) position of the substring:
+```{r}
+x <- c("Apple", "Banana", "Pear")
+str_sub(x, 1, 3)
+str_sub(x, -3, -1)
+```
+The function str_trim() trims the white space from a string.
+
+```{r}
+str_trim(" abc ")
+
+str_trim(" abc ", side = "left")
+
+str_trim(" abc ", side = "right")
+```
+
+
+The opposite of str_trim() is str_pad() which adds characters to each side.
+```{r}
+str_pad("abc", width=5, side = "both")
+
+str_pad("abc", 5, side = "right")
+
+str_pad("abc", 5, side = "left")
+```
+
+
+### Matching Patterns with Regular Expressions
+
+Regexps are a very terse language that allow you to describe patterns
+in strings. 
+
+```{r}
+x <- c("apple", "banana", "pear")
+str_view(x, "an")
+
+```
+
+The next step up in complexity is ., which matches any character
+(except a newline):
+
+```{r}
+str_view(x, ".a.")
+```
+So to match an ., you need the regexp \.. Unfortunately this creates a problem.
+We use strings to represent regular expressions, and \ is also used as
+an escape symbol in strings. So to create the regular expression \.
+we need the string "\\."
+That means to match a literal \
+you need to write "\\\\"—you need four backslashes to match one!
+
+```{r}
+x <- "a\\b"
+writeLines(x)
+
+str_view(x, "\\\\")
+
+```
+
+How would you match the sequence "'\?
+
+
+```{r}
+y=c("\"'\\", "\"'\\")
+str_view(y, "\"'\\\\" )
+```
+
+
+
+3. What patterns will the regular expression \..\..\.. match?
+How would you represent it as a string?
+```{r}
+x=c(".a.b.c", ".a.b", ".....")
+str_view(x, "\\..\\..\\..")
+```
+Construct regular expressions to match words that:
+a. Start and end with the same character.
+b. Contain a repeated pair of letters (e.g., “church” contains “ch”
+repeated twice).
+c. Contain one letter repeated in at least three places (e.g.,
+“eleven” contains three “e”s).
+
+
+```{r}
+words=c("eleven", "church", "anana")
+str_view(words, "^(.)((.*\\1$)|\\1?$)")
+```
+
+```{r}
+words=c("eleven", "church","anana")
+str_view(words, "([A-Za-z][A-Za-z]).*\\1")
+```
+```{r}
+words=c("eleven", "church","anana")
+str_view(words, "([a-z]).*\\1.*\\1")
+```
+
+
+
+##Dates and Times with lubridate
+
+
+```{r}
+
+library(lubridate)
+library(nycflights13)
+```
+
+To get the current date or date-time you can use today() or now():
+```{r}
+today()
+now()
+```
+
+##From Strings
+
+```{r}
+ymd("2017-01-31")
+
+mdy("January 31st, 2017")
+
+dmy("31-Jan-2017")
+```
+
+Use the appropriate lubridate function to parse each of the fol‐
+lowing dates:
+d1 <- "January 1, 2010"
+d2 <- "2015-Mar-07"
+d3 <- "06-Jun-2017"
+d4 <- c("August 19 (2015)", "July 1 (2015)")
+d5 <- "12/30/14" # Dec 30, 2014
+
+```{r}
+d1 <- "January 1, 2010"
+d2 <- "2015-Mar-07"
+d3 <- "06-Jun-2017"
+d4 <- c("August 19 (2015)", "July 1 (2015)")
+d5 <- "12/30/14" # Dec 30, 2014
+```
+
+```{r}
+mdy(d1)
+
+ymd(d2)
+
+dmy(d3)
+
+mdy(d4)
+
+mdy(d5)
+```
+
